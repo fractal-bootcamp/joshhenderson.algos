@@ -1,10 +1,11 @@
 "use client"
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+// import Bubblesort from "./bubblesort";
 
 
 function bubblesort(arr: number[]) {
-  const sortedArray = [...arr]
+  const arrayCopy = [...arr]
   let intArrays: number[][] = [] // array of intermediate arrays
   //define a function to determine if the second element of the array is greater than the first
   function shouldSwap(firstElement: number, secondElement: number) {
@@ -20,23 +21,24 @@ function bubblesort(arr: number[]) {
 
   //loop through each element of the array
   do {
-    sorted = true
-    for (let i = 0; i < sortedArray.length - 1; i++) {
+    sorted = true // set sorted variablie to true, we are assuming the array is sorted as a fail safe 
+    for (let i = 0; i < arrayCopy.length - 1; i++) {
 
-      //if should swap function says you gotta swap then swap. and keep swapped as true
-      if (shouldSwap(sortedArray[i], sortedArray[i + 1])) {
+
+      if (shouldSwap(arrayCopy[i], arrayCopy[i + 1])) { //if second element is greater than the first, swap them
         console.log("WTF")
-        const temp = sortedArray[i]
-        sortedArray[i] = sortedArray[i + 1]
-        sortedArray[i + 1] = temp
-        sorted = false
-        intArrays = [...intArrays, [...sortedArray]]
-        //if should swap says you dont gotta swapp then swapped = false
+        const temp = arrayCopy[i]
+        arrayCopy[i] = arrayCopy[i + 1]
+        arrayCopy[i + 1] = temp
+        sorted = false // a swap occured so we are unsure if the array is sorted 
+        intArrays = [...intArrays, [...arrayCopy]]
+
+
       }
       console.log("arrays", intArrays)
       //if swapped is still true run it again 
 
-      console.log(sortedArray)
+      console.log(arrayCopy)
     }
   } while (!sorted)
 
@@ -45,7 +47,7 @@ function bubblesort(arr: number[]) {
   // if (unsorted) { return bubblesort(arr); console.log("running bubblesort again") }
 
   // if we're sorted, return the array
-  return { sortedArr: sortedArray, intArrays };
+  return { sortedArr: arrayCopy, intArrays };
 }
 
 const initialArray = [95, 65, 45, 23, 57, 89, 12, 45, 67, 34, 78, 56, 90]
@@ -59,17 +61,22 @@ export default function Home() {
 
   useEffect(() => {
     const { sortedArr, intArrays } = bubblesort(initialArray)
+    intArrays.forEach((value, index, array) => {
+      setTimeout(() => { setIntermediateArrays(intArrays.slice(0, index)) }, 200 * index)
+    })
     setArray(sortedArr)
-    setIntermediateArrays(intArrays)
   }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}>
         {array.join("  ")}
         {intermediateArrays.join(" ")}
         {/* {bubblesort(initialArray)} */}
-      </div>
+      </motion.div>
     </main>
   );
 }
