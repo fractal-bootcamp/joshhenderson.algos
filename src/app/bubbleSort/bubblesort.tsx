@@ -3,34 +3,24 @@ import shouldSwap from "./shouldSort"
 export default function bubblesort(arr: number[]) {
 
 
-    const sortedArray = arr// store incoming array prop in variable
-    let intArrays: number[][] = [] // array of intermediate arrays
-
-
-    let sorted = true // assume that incoming array is sorted.... boolean we can change later
-
-    //loop through each element of the array
-    do {
-        // sorted = true // set sorted variablie to true, we are assuming the array is sorted as a fail safe 
-        for (let i = 0; i < sortedArray.length - 1; i++) {
-
-            if (shouldSwap(sortedArray[i], sortedArray[i + 1])) { //if second element is greater than the first, swap them
-                console.log("we are swapping")
-                const temp = sortedArray[i] // assign a variable to the first element 
-                sortedArray[i] = sortedArray[i + 1] //assign the first element to the second element
-                sortedArray[i + 1] = temp // assign the second element to the temp variable which was the first element
-                sorted = false // a swap occured so we are unsure if the array is sorted, thus sorted is false
-                intArrays = [...intArrays, [...sortedArray]] // add current array to the intermediate array list to track each iteration
-            }
-            console.log("arrays so far", intArrays)
-
-            console.log(sortedArray)
+    const arrayCopy: number[] = arr// store incoming array prop in variable
+    let arraySortingHistory: number[][] = [] // array of intermediate arrays
+    let thereWasASwap = false //hold whether there was a swap in a variable 
+    for (let i = 0; i < arr.length - 1; i++) {
+        //for each element in the array starting in the first position go through it
+        // until you get to the last two
+        if (arrayCopy[i] > arrayCopy[i + 1])
+        //if the 1st element is greater than the second element then...
+        {
+            //swap the two elements
+            [arrayCopy[i], arrayCopy[i + 1]] = [arrayCopy[i + 1], arrayCopy[i]]
+            thereWasASwap = true //declare that there was a swap 
         }
-    } while (!sorted)
-    // don't call yourself if you're sorted aka sorted === true
-    // every time we call this we should have a slightly more sorted array
+        // if there was a swap then add this version of the array copy to the array sorting history
+        // and run the function again but this time on the copy not the OG array
+        if (thereWasASwap) { arraySortingHistory.push(arrayCopy); bubblesort(arrayCopy) }
 
-    // if (unsorted) { return bubblesort(arr); console.log("running bubblesort again") }
-    // if we're sorted, return the array
-    return { sortedArr: sortedArray, sortHistory: intArrays };
+    }
+
+    return { sortedArr: arrayCopy, sortHistory: arraySortingHistory };
 }

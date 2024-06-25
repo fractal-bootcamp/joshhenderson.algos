@@ -1,26 +1,28 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import bubblesort from './bubblesort'
+
 
 type SortVisualizerProps = {
-  history: number[][]
+  historyArray: number[][]
 }
 
 export default function SortVisualizer(props: SortVisualizerProps) {
-
-  const [historyIndex, setHistoryIndex] = useState(0)
-
+  //store the index in the history aray as a state variable
+  const [historyArrayIndex, setHistoryArrayIndex] = useState(0)
+  //runs on mount and executes +1 on the history array index. 
   useEffect(() => {
-    if (historyIndex === props.history.length - 1) {
-      return
+    if (historyArrayIndex === props.historyArray.length - 1) {
+      return // if the history array index === the length of the history array, return
     }
-    setTimeout(() => setHistoryIndex(historyIndex + 1), 1000)
-  }, [historyIndex])
+    setTimeout(() => setHistoryArrayIndex(historyArrayIndex + 1), 1000)
+    //after one second, execute callback function increment history array index +1
+
+  }, [historyArrayIndex]) //dependency that triggers the useEffect each time recursively 
 
   return (
 
     <div>
-      {props.history[historyIndex]}
+      {props.historyArray[historyArrayIndex]}
     </div>
 
   )
