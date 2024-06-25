@@ -1,9 +1,13 @@
 import shouldSwap from "./shouldSort"
 
-export default function bubblesort(arr: number[]) {
+
+export default function BubbleSort(arr: number[]): {
+    sortArray: number[],
+    sortHistory: number[][]
+} {
 
 
-    const arrayCopy: number[] = arr// store incoming array prop in variable
+    const arrayCopy: number[] = [...arr]// store incoming array prop in variable
     let arraySortingHistory: number[][] = [] // array of intermediate arrays
     let thereWasASwap = false //hold whether there was a swap in a variable 
     for (let i = 0; i < arr.length - 1; i++) {
@@ -14,13 +18,24 @@ export default function bubblesort(arr: number[]) {
         {
             //swap the two elements
             [arrayCopy[i], arrayCopy[i + 1]] = [arrayCopy[i + 1], arrayCopy[i]]
+            //console.log("swapped", arrayCopy[i + 1], arrayCopy[i])
             thereWasASwap = true //declare that there was a swap 
         }
-        // if there was a swap then add this version of the array copy to the array sorting history
-        // and run the function again but this time on the copy not the OG array
-        if (thereWasASwap) { arraySortingHistory.push(arrayCopy); bubblesort(arrayCopy) }
 
+        if (thereWasASwap) { //if there was a swap 
+            arraySortingHistory.push(arrayCopy); //add the current array to the arraySortingHistory
+
+            const sortWithHistory = BubbleSort(arrayCopy); // call the function again because
+            // we are unsure if the array is sorted 
+
+            return {
+
+                sortArray: sortWithHistory.sortArray,
+                sortHistory: arraySortingHistory.concat(sortWithHistory.sortHistory)
+
+            }
+        }
     }
-
-    return { sortedArr: arrayCopy, sortHistory: arraySortingHistory };
+    console.log(arraySortingHistory)
+    return { sortArray: arrayCopy, sortHistory: arraySortingHistory };
 }
