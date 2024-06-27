@@ -8,6 +8,7 @@ type mergeProps = {
 }
 const testArray1 = [1, 3, 5, 7, 9, 11, 23, 45]
 const testArray2 = [1, 3, 4, 5, 6, 7, 7, 8, 11, 13, 14, 16]
+
 function merge(arrOne: number[], arrTwo: number[]): number[] {
     //    if (arrOne.length === 0 || arrTwo.length === 0) { return console.log("nope") }
     let array1: number[] = [...arrOne]; //Use spread operator to make a copy of arrOne function argument
@@ -15,10 +16,14 @@ function merge(arrOne: number[], arrTwo: number[]): number[] {
     let mergedArray: number[] = [] //initialize an empty array 
     while (array1.length && array2.length) { // for each element, while index is less than the length of either array
         if (array1[0] < array2[0]) { // if the first index of array1 is less than array2 
-            mergedArray.push(array1.shift()) // then pop it off the array and push it on to the mergedArray
+            const movingNumber = array1.shift()
+            if (movingNumber === undefined) { console.log("error") }
+            else mergedArray.push(movingNumber) // then pop it off the array and push it on to the mergedArray
         }
         else { // otherwise,
-            mergedArray.push(array2.shift()) //pop the first index off array2 and push it to the end of mergedArray
+            const movingNumber = array2.shift()
+            if (movingNumber === undefined) { console.log("error") }
+            else mergedArray.push(movingNumber) //pop the first index off array2 and push it to the end of mergedArray
         }
 
 
@@ -37,7 +42,7 @@ function merge(arrOne: number[], arrTwo: number[]): number[] {
 //once both function calls have been satisfied, it merges them and returns the sorted array to its parent node or the main execution pathway 
 
 
-
+console.log()
 
 function mergeSort(arr: number[]): number[] {// takes an unsorted array parameter/argument
 
